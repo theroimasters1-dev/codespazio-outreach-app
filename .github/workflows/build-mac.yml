@@ -3,7 +3,18 @@ name: Build Desktop Installers (macOS & Windows)
 on:
   push:
     branches: [ main, master ]
+    tags:
+      - 'v*'
   workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Publish to GitHub Release'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
 
 jobs:
   build-mac:
@@ -35,6 +46,21 @@ jobs:
             dist/*.dmg
             dist/*.zip
 
+      - name: Publish macOS Release Assets
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'v1.0.5' }}
+          name: "CodeSpazio Client Acquisition Suite - v1.0.5"
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          files: |
+            dist/*.dmg
+            dist/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-windows:
     name: Build Windows Installer (NSIS & Portable)
     runs-on: windows-latest
@@ -62,3 +88,17 @@ jobs:
           name: CodeSpazio-Windows-Installers
           path: |
             dist/*.exe
+
+      - name: Publish Windows Release Assets
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'v1.0.5' }}
+          name: "CodeSpazio Client Acquisition Suite - v1.0.5"
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          files: |
+            dist/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
