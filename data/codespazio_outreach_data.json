@@ -1,0 +1,45 @@
+{
+  "settings": {
+    "gmail": {
+      "address": "",
+      "appPassword": "",
+      "fromName": "CodeSpazio Solutions Pvt Ltd"
+    },
+    "gemini": {
+      "apiKey": "",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.7
+    },
+    "payment": {
+      "accountName": "CodeSpazio Solutions Pvt Ltd",
+      "bankName": "HDFC Bank",
+      "accountNumber": "",
+      "ifscCode": "",
+      "swiftBic": "",
+      "upiId": "",
+      "paymentUrl": "",
+      "currency": "USD",
+      "paymentTerms": "50% milestone advance upon project kickoff, 50% upon staging approval and code deployment. All IP & source code belongs 100% to client."
+    },
+    "outreach": {
+      "dailyLimit": 30,
+      "delaySecondsMin": 40,
+      "delaySecondsMax": 100,
+      "autoPilotOutreach": false,
+      "autoPilotReply": true,
+      "pollIntervalMinutes": 5,
+      "requireApprovalBeforeSendingReply": false,
+      "signature": "\n\nBest regards,\nCodeSpazio Solutions Pvt Ltd\nOfficial: official@codespazio.com | Phone: +91 8769892429\nhttps://codespazio.com/\nJaipur, Rajasthan, India"
+    }
+  },
+  "leads": [],
+  "inbox": [],
+  "campaigns": [],
+  "logs": [],
+  "stats": {
+    "leadsDiscovered": 0,
+    "emailsSent": 0,
+    "repliesReceived": 0,
+    "conversions": 0
+  }
+}

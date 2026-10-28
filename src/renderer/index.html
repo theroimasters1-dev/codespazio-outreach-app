@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeSpazio Solutions | AI Client Acquisition & Deal Closer Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="assets/logo.png" alt="CodeSpazio Solutions Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">CodeSpazio</span>
+          <span class="brand-sub">Client Acquisition AI</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="dashboard">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="prospector">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-label">Client Prospector</span>
+          <span class="badge" id="badgeLeads">0</span>
+        </button>
+        <button class="nav-item" data-tab="campaigns">
+          <span class="nav-icon">🚀</span>
+          <span class="nav-label">Cold Outreach</span>
+        </button>
+        <button class="nav-item" data-tab="inbox">
+          <span class="nav-icon">📥</span>
+          <span class="nav-label">Inbox & Deal Closer</span>
+          <span class="badge badge-accent" id="badgeInbox">0</span>
+        </button>
+        <button class="nav-item" data-tab="knowledge">
+          <span class="nav-icon">🌐</span>
+          <span class="nav-label">CodeSpazio Services</span>
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings & Keys</span>
+          <span class="status-dot" id="configStatusDot"></span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="autopilot-card">
+          <div class="autopilot-header">
+            <span class="pulse-indicator"></span>
+            <span class="autopilot-title">Autonomous Closer</span>
+          </div>
+          <p class="autopilot-desc">Auto-replies & sends follow-ups to close deals</p>
+          <label class="switch">
+            <input type="checkbox" id="toggleAutoPilotSidebar">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="app-version">CodeSpazio Solutions Pvt Ltd • Jaipur, India</div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title" id="pageTitle">Dashboard & Pipeline</h1>
+          <p class="page-desc" id="pageDesc">Autonomous client research, email pitching, follow-ups, and automated conversion closing.</p>
+        </div>
+        <div class="topbar-right">
+          <div class="connection-status-pill" id="connStatusPill">
+            <span class="dot"></span>
+            <span class="text">Checking Credentials...</span>
+          </div>
+          <button class="btn btn-secondary" id="btnSyncInbox">
+            <span class="btn-icon">🔄</span> Check Inbox
+          </button>
+          <button class="btn btn-primary" id="btnQuickProspect">
+            <span class="btn-icon">⚡</span> Discover 25 Leads
+          </button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <div class="view-viewport">
+
+        <!-- ================= DASHBOARD TAB ================= -->
+        <section class="tab-pane active" id="tab-dashboard">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Leads Discovered</span>
+                <span class="stat-icon-wrap icon-cyan">🎯</span>
+              </div>
+              <div class="stat-value" id="statLeadsCount">0</div>
+              <div class="stat-meta text-cyan">Potential client accounts analyzed</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Outreach Sent</span>
+                <span class="stat-icon-wrap icon-purple">📨</span>
+              </div>
+              <div class="stat-value" id="statSentCount">0</div>
+              <div class="stat-meta text-purple">Personalized cold emails delivered</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-label">Replies Received</span>
+                <span class="stat-icon-wrap icon-amber">💬</span>
+              </div>
+              <div class="stat-value" id="statRepliesCount">0</div>
+              <div class="stat-meta text-amber">Active inbound client conversations</div>
+            </div>
+
+            <div class="stat-card stat-card-highlight">
+              <div class="stat-header">
+                <span class="stat-label">Conversions & Deals</span>
+                <span class="stat-icon-wrap icon-green">💎</span>
+              </div>
+              <div class="stat-value text-green" id="statConversionsCount">0</div>
+              <div class="stat-meta text-green">Payment details sent / deals closed</div>
+            </div>
+          </div>
+
+          <!-- Pipeline & Live Terminal Grid -->
+          <div class="dash-grid">
+            <!-- Left: Pipeline Stage Breakdown -->
+            <div class="card pipeline-card">
+              <div class="card-header">
+                <h3 class="card-title">Pipeline Progress</h3>
+                <span class="card-badge">Live CRM</span>
+              </div>
+              <div class="pipeline-progress-list">
+                <div class="pipeline-item">
+                  <div class="pipeline-label-row">
+                    <span>1. Discovered / Researched</span>
+                    <span id="pipeDiscovered">0</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill fill-cyan" id="barDiscovered" style="width: 0%"></div></div>
+                </div>
+
+                <div class="pipeline-item">
+                  <div class="pipeline-label-row">
+                    <span>2. Cold Pitch Delivered</span>
+                    <span id="pipeContacted">0</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill fill-purple" id="barContacted" style="width: 0%"></div></div>
+                </div>
+
+                <div class="pipeline-item">
+                  <div class="pipeline-label-row">
+                    <span>3. Client Replied</span>
+                    <span id="pipeReplied">0</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill fill-amber" id="barReplied" style="width: 0%"></div></div>
+                </div>
+
+                <div class="pipeline-item">
+                  <div class="pipeline-label-row">
+                    <span>4. High Interest / Call Requested</span>
+                    <span id="pipeInterested">0</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill fill-indigo" id="barInterested" style="width: 0%"></div></div>
+                </div>
+
+                <div class="pipeline-item">
+                  <div class="pipeline-label-row">
+                    <span>5. Converted / Payment Details Shared</span>
+                    <span id="pipeConverted">0</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill fill-green" id="barConverted" style="width: 0%"></div></div>
+                </div>
+              </div>
+
+              <div class="pipeline-footer-actions">
+                <button class="btn btn-outline" id="btnGoToProspector">Find 25 Prospects →</button>
+                <button class="btn btn-outline" id="btnGoToCampaigns">Start Outreach Sprint →</button>
+              </div>
+            </div>
+
+            <!-- Right: Real-Time AI Activity Console -->
+            <div class="card terminal-card">
+              <div class="card-header">
+                <div class="terminal-dots">
+                  <span class="t-dot red"></span>
+                  <span class="t-dot yellow"></span>
+                  <span class="t-dot green"></span>
+                  <h3 class="card-title ml-2">Live AI & Email Activity Terminal</h3>
+                </div>
+                <button class="btn btn-xs btn-ghost" id="btnClearLogs">Clear Log</button>
+              </div>
+              <div class="terminal-body" id="liveTerminal">
+                <div class="terminal-line"><span class="t-time">[System]</span> CodeSpazio Outreach Suite initialized. Ready for commands.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PROSPECTOR TAB ================= -->
+        <section class="tab-pane" id="tab-prospector">
+          <div class="card mb-4">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">AI Client Research & Prospector Engine</h3>
+                <p class="card-desc">Find 25 daily targeted businesses and founders needing CodeSpazio's services (Web, Mobile, DevOps, MVP).</p>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btnOpenManualLeadModal">+ Add Manual Lead</button>
+            </div>
+
+            <div class="prospect-form-grid">
+              <div class="form-group">
+                <label class="form-label">Target Industry / Niche</label>
+                <input type="text" class="form-control" id="prospectNiche" placeholder="e.g. Healthcare Startups, E-commerce, FinTech" value="High Growth Startups & E-commerce Brands">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Geography / Market</label>
+                <input type="text" class="form-control" id="prospectLocation" placeholder="e.g. United States, UK, Europe, India" value="United States & Global">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Primary Service to Pitch</label>
+                <select class="form-control" id="prospectService">
+                  <option value="Bespoke Web Development & Full-Stack Engineering">Bespoke Web Development & Full-Stack Engineering (MERN / Next.js / Python)</option>
+                  <option value="Native & Cross-Platform Mobile Apps (iOS & Android)">Native & Cross-Platform Mobile Apps (iOS & Android)</option>
+                  <option value="Cloud Architecture, Kubernetes, Docker & CI/CD DevOps">Cloud Architecture, Kubernetes, Docker & CI/CD DevOps</option>
+                  <option value="Startup & MVP Consulting, Product Strategy & UI/UX">Startup & MVP Consulting, Product Strategy & UI/UX</option>
+                  <option value="Custom AI Solutions & Workflow Automation">Custom AI Solutions & Workflow Automation</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Prospects to Discover</label>
+                <select class="form-control" id="prospectCount">
+                  <option value="5">5 Prospects (Quick Test)</option>
+                  <option value="15">15 Prospects (Medium Batch)</option>
+                  <option value="25" selected>25 Prospects (Daily Recommended Target)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="prospect-form-actions">
+              <div>
+                <div class="text-muted small">Gemini will analyze real business pain points, technical gaps, and match with CodeSpazio's 500+ deployment credentials.</div>
+                <label class="d-flex align-items-center gap-2 mt-1" style="font-size: 12px; cursor: pointer; color: var(--accent-cyan);">
+                  <input type="checkbox" id="chkAutoSendAfterDiscovery" checked>
+                  <span><strong>⚡ Auto-Email Mode:</strong> Automatically write unique pitches & send via Gmail immediately after discovering leads</span>
+                </label>
+              </div>
+              <button class="btn btn-primary" id="btnStartProspecting">
+                <span class="btn-icon">⚡</span> Run AI Research & Discover Leads
+              </button>
+            </div>
+          </div>
+
+          <!-- Discovered Leads Table -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Discovered Prospects (<span id="leadsTableCount">0</span>)</h3>
+                <span class="text-muted small"><span id="uncontactedCount">0</span> uncontacted leads</span>
+              </div>
+              <div class="header-actions" style="display: flex; gap: 8px;">
+                <button class="btn btn-sm btn-primary" id="btnProspectorSendAll">
+                  <span class="btn-icon">🚀</span> Auto-Pitch & Send Emails to All Leads
+                </button>
+                <button class="btn btn-sm btn-secondary" id="btnExportLeadsCsv">Export CSV</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="leads-table">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Detected Gaps / Needs</th>
+                    <th>Status</th>
+                    <th>Follow-ups</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="leadsTableBody">
+                  <tr>
+                    <td colspan="7" class="text-center py-6 text-muted">
+                      No leads discovered yet. Configure your niche above and click "Run AI Research & Discover Leads"!
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= CAMPAIGNS TAB ================= -->
+        <section class="tab-pane" id="tab-campaigns">
+          <div class="campaign-split-view">
+            <!-- Left: Lead Selector & Pitch Form -->
+            <div class="card campaign-controls">
+              <div class="card-header">
+                <h3 class="card-title">Generate Unique Pitch</h3>
+                <span class="card-badge">5 Dynamic Angles</span>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Select Target Lead</label>
+                <select class="form-control" id="campaignLeadSelect">
+                  <option value="">-- Choose a lead --</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Pitch Angle / Value Focus</label>
+                <select class="form-control" id="campaignPitchFocus">
+                  <option value="Micro-Teardown & Specific Observation">Micro-Teardown & Specific Observation (Free 2-min Loom)</option>
+                  <option value="Case Study & Peer Benchmark">Case Study & Peer Benchmark (500+ deployments track record)</option>
+                  <option value="Problem-Agitate-Solve (Agile Sprint)">Problem-Agitate-Solve (2-week sprints, 24/7 support)</option>
+                  <option value="Cloud Cost Reduction & Zero Downtime DevOps">Cloud Cost Reduction & Zero Downtime DevOps (AWS/Kubernetes)</option>
+                  <option value="Low-Friction Strategic Value Offer">Low-Friction Strategic Value Offer (Under 90 words)</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Special Custom Instructions (Optional)</label>
+                <textarea class="form-control" id="campaignCustomNotes" rows="2" placeholder="e.g. Focus on launching their mobile app or reducing AWS bill"></textarea>
+              </div>
+
+              <button class="btn btn-secondary w-100 mb-3" id="btnGenerateEmailDraft">
+                <span class="btn-icon">✨</span> Generate Unique Email with Gemini
+              </button>
+
+              <hr class="divider">
+
+              <div class="batch-send-box">
+                <div class="batch-title">Batch 25 Outreach Queue</div>
+                <p class="batch-desc">Sequentially emails all "Discovered" leads with human randomized delays (40-90s). Automatically rotates frameworks and embeds CodeSpazio's WhatsApp button.</p>
+                <button class="btn btn-outline-cyan w-100" id="btnStartBatchOutreach">
+                  <span class="btn-icon">🚀</span> Launch 25-Lead Outreach Sprint
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Email Preview & Live Editor -->
+            <div class="card campaign-preview">
+              <div class="card-header">
+                <h3 class="card-title">Email Preview & Sender</h3>
+                <div class="badge-row">
+                  <span class="badge" id="previewRecipientBadge">No lead selected</span>
+                </div>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Recipient Email</label>
+                <input type="email" class="form-control" id="emailToAddress" placeholder="recipient@company.com">
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Subject Line</label>
+                <input type="text" class="form-control" id="emailSubjectLine" placeholder="Subject line will be generated...">
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Email Body (Markdown / Plain Text)</label>
+                <textarea class="form-control font-mono" id="emailBodyText" rows="11" placeholder="Click 'Generate Unique Email' or type your email here..."></textarea>
+              </div>
+
+              <div class="email-actions">
+                <div class="signature-tag">💬 Includes WhatsApp Direct Connect (+91 8769892429)</div>
+                <button class="btn btn-primary" id="btnSendSingleEmail">
+                  <span class="btn-icon">📨</span> Send Email via Gmail
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= INBOX & DEAL CLOSER TAB ================= -->
+        <section class="tab-pane" id="tab-inbox">
+          <div class="inbox-split-view">
+            <!-- Left: Incoming Messages List -->
+            <div class="card inbox-list-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Inbound Replies (<span id="inboxCount">0</span>)</h3>
+                  <p class="card-desc">Synchronized from Gmail IMAP</p>
+                </div>
+                <button class="btn btn-sm btn-secondary" id="btnRefreshInboxNow">🔄 Sync</button>
+              </div>
+
+              <div class="inbox-thread-list" id="inboxThreadList">
+                <div class="text-center py-6 text-muted">
+                  No replies received yet. Once prospects reply to your cold emails, they appear here automatically!
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Intent Analysis & AI Deal Closer Panel -->
+            <div class="card inbox-detail-card">
+              <div class="card-header">
+                <h3 class="card-title">AI Deal Closer & Response Center</h3>
+                <div class="intent-pill-wrap" id="selectedIntentPillWrap">
+                  <span class="intent-pill" id="selectedIntentPill">Select a message</span>
+                </div>
+              </div>
+
+              <div id="noMessageSelectedState" class="empty-inbox-state">
+                <div class="empty-icon">💬</div>
+                <h4>Select an email from the left</h4>
+                <p>Gemini will analyze the prospect's sentiment and draft a conversion reply equipped with CodeSpazio's payment details & onboarding steps.</p>
+              </div>
+
+              <div id="messageDetailView" style="display: none;">
+                <!-- Message Header -->
+                <div class="msg-header-box">
+                  <div class="msg-header-row">
+                    <div>
+                      <strong class="msg-from-name" id="viewMsgFrom">Client Name</strong>
+                      <span class="msg-from-addr text-muted" id="viewMsgAddr">email@company.com</span>
+                    </div>
+                    <span class="msg-date text-muted" id="viewMsgDate">Today</span>
+                  </div>
+                  <div class="msg-subject" id="viewMsgSubject">Subject</div>
+                </div>
+
+                <!-- Message Body -->
+                <div class="msg-body-box" id="viewMsgBody">
+                  Email content...
+                </div>
+
+                <!-- AI Analysis Card -->
+                <div class="ai-insight-box">
+                  <div class="ai-insight-header">
+                    <span>⚡ Gemini Intent & Conversion Analysis</span>
+                    <span class="confidence-badge" id="viewConfidenceBadge">95% Confidence</span>
+                  </div>
+                  <p class="ai-insight-summary" id="viewIntentSummary">Summary...</p>
+                  <div class="ai-insight-action">
+                    <strong>Recommended Next Action:</strong> <span id="viewRecommendedAction">Action...</span>
+                  </div>
+                </div>
+
+                <!-- AI Drafted Reply Box -->
+                <div class="closer-reply-box">
+                  <div class="closer-reply-header">
+                    <label class="form-label mb-0">AI Deal Closer Draft (Ready to Convert)</label>
+                    <button class="btn btn-xs btn-outline-cyan" id="btnRegenerateCloserReply">✨ Regenerate with Payment Info</button>
+                  </div>
+                  <textarea class="form-control font-mono mt-2" id="replyBodyText" rows="8"></textarea>
+                  
+                  <div class="closer-actions mt-3">
+                    <div class="payment-flag-note" id="paymentFlagNote">
+                      💳 <strong>Payment Details Injected:</strong> Bank details, UPI, and invoice terms included.
+                    </div>
+                    <button class="btn btn-primary" id="btnSendCloserReply">
+                      <span class="btn-icon">🚀</span> Approve & Send Reply via Gmail
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= KNOWLEDGE BASE TAB ================= -->
+        <section class="tab-pane" id="tab-knowledge">
+          <div class="card mb-4">
+            <div class="knowledge-hero">
+              <div class="knowledge-badge">Verified CodeSpazio Profile</div>
+              <h2>CodeSpazio Solutions Pvt Ltd</h2>
+              <p class="knowledge-tagline">Elite Digital Solutions | Where Vision Meets Execution • Jaipur, Rajasthan, India</p>
+              <div class="knowledge-stats-strip">
+                <div class="k-stat"><strong>500+</strong> <span>Deployments Delivered</span></div>
+                <div class="k-stat"><strong>200+</strong> <span>Careers Launched</span></div>
+                <div class="k-stat"><strong>10+ Yrs</strong> <span>Deep Industry Tech Expertise</span></div>
+                <div class="k-stat"><strong>99%+</strong> <span>Client Delight Rate</span></div>
+                <div class="k-stat"><strong>24/7</strong> <span>Dedicated Technical Support</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="services-knowledge-grid" id="knowledgeServicesList">
+            <!-- Rendered dynamically from codespazioKnowledge.js -->
+          </div>
+        </section>
+
+        <!-- ================= SETTINGS TAB ================= -->
+        <section class="tab-pane" id="tab-settings">
+          <div class="settings-grid">
+            
+            <!-- Gmail Credentials Card -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">1. Gmail Integration (SMTP & IMAP)</h3>
+                  <p class="card-desc">Used to send cold emails, automated follow-ups, and read client replies.</p>
+                </div>
+                <button class="btn btn-sm btn-outline-cyan" id="btnTestGmail">Test Gmail Connection</button>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Sender Display Name</label>
+                <input type="text" class="form-control" id="cfgFromName" placeholder="CodeSpazio Solutions Pvt Ltd" value="CodeSpazio Solutions Pvt Ltd">
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Gmail Address</label>
+                <input type="email" class="form-control" id="cfgGmailAddress" placeholder="youremail@gmail.com">
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Gmail App Password (16 Characters)</label>
+                <div class="input-password-wrap">
+                  <input type="password" class="form-control font-mono" id="cfgGmailPassword" placeholder="xxxx xxxx xxxx xxxx">
+                  <button type="button" class="btn-toggle-pwd" id="btnToggleGmailPwd">👁️</button>
+                </div>
+                <div class="form-help-box mt-2">
+                  <strong>💡 How to get a Gmail App Password:</strong>
+                  <ol class="small-list">
+                    <li>Go to your Google Account > <strong>Security</strong>.</li>
+                    <li>Ensure <strong>2-Step Verification</strong> is ON.</li>
+                    <li>Search for <strong>"App passwords"</strong> (or visit <a href="#" id="linkGoogleAppPasswords">myaccount.google.com/apppasswords</a>).</li>
+                    <li>Create an app named "CodeSpazio App" and paste the 16-character code here.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gemini AI Engine Card -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">2. Google Gemini API Engine</h3>
+                  <p class="card-desc">Powers client prospecting, personalized copywriting, follow-ups & closing.</p>
+                </div>
+                <button class="btn btn-sm btn-outline-cyan" id="btnTestGemini">Test Gemini Key</button>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Gemini API Key</label>
+                <div class="input-password-wrap">
+                  <input type="password" class="form-control font-mono" id="cfgGeminiKey" placeholder="AIzaSy...">
+                  <button type="button" class="btn-toggle-pwd" id="btnToggleGeminiKey">👁️</button>
+                </div>
+                <div class="form-help-box mt-2">
+                  Get your free Gemini API key in 1 click at <a href="#" id="linkAiStudio">aistudio.google.com</a>.
+                </div>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="form-label">Gemini Model</label>
+                <select class="form-control" id="cfgGeminiModel">
+                  <option value="gemini-3.8-flash" selected>Gemini 3.8 Flash (Antigravity Latest & Fastest)</option>
+                  <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (Ultra-Low Latency)</option>
+                  <option value="gemini-3.1">Gemini 3.1 (High Speed Agent)</option>
+                  <option value="gemini-3.5-pro">Gemini 3.5 Pro (Deep Strategic Reasoning)</option>
+                  <option value="gemini-2.5-flash">Gemini 2.5 Flash (Reliable Fast)</option>
+                  <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                  <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                  <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Payment & Invoicing Gateway Card -->
+            <div class="card settings-full-col">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">3. Payment & Invoicing Details (Deal Closer)</h3>
+                  <p class="card-desc">When a client says YES or asks to avail your services, Gemini injects these exact payment & onboarding details to secure the conversion.</p>
+                </div>
+                <span class="card-badge highlight">Auto-Injected on Conversion</span>
+              </div>
+
+              <div class="payment-inputs-grid">
+                <div class="form-group">
+                  <label class="form-label">Beneficiary / Company Name</label>
+                  <input type="text" class="form-control" id="cfgPayAccountName" value="CodeSpazio Solutions Pvt Ltd">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Bank Name</label>
+                  <input type="text" class="form-control" id="cfgPayBankName" placeholder="e.g. HDFC Bank / ICICI Bank" value="HDFC Bank">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Account Number</label>
+                  <input type="text" class="form-control font-mono" id="cfgPayAccountNumber" placeholder="Account Number">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">IFSC Code (India)</label>
+                  <input type="text" class="form-control font-mono" id="cfgPayIfscCode" placeholder="HDFC0001234">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">SWIFT / BIC Code (International Wire)</label>
+                  <input type="text" class="form-control font-mono" id="cfgPaySwiftBic" placeholder="HDFCINBBXXX">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">UPI ID / VPA (GPay / PhonePe / Paytm)</label>
+                  <input type="text" class="form-control" id="cfgPayUpiId" placeholder="codespazio@okaxis">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Stripe / PayPal / Payment Link / Invoice URL</label>
+                  <input type="url" class="form-control" id="cfgPayPaymentUrl" placeholder="https://buy.stripe.com/... or https://paypal.me/..." value="https://codespazio.com/contact-us">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Preferred Currency</label>
+                  <select class="form-control" id="cfgPayCurrency">
+                    <option value="USD">USD ($ - International Clients)</option>
+                    <option value="INR">INR (₹ - Indian Clients)</option>
+                    <option value="EUR">EUR (€ - European Clients)</option>
+                    <option value="GBP">GBP (£ - UK Clients)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Standard Milestone & Engagement Terms</label>
+                <textarea class="form-control" id="cfgPayTerms" rows="2">50% milestone advance upon project kickoff & contract signing, 50% upon final staging approval and live deployment handover. All code, IP, and designs belong 100% to client.</textarea>
+              </div>
+            </div>
+
+            <!-- Automation & Deliverability Controls -->
+            <div class="card settings-full-col">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">4. Autonomous Auto-Pilot & Follow-up Controls</h3>
+                  <p class="card-desc">Configure follow-ups, safety limits, and background reply automation.</p>
+                </div>
+              </div>
+
+              <div class="automation-toggles-grid">
+                <div class="toggle-card">
+                  <div>
+                    <strong>Autonomous Deal Closer & Auto-Reply</strong>
+                    <p class="small text-muted">When a prospective client replies, Gemini immediately analyzes intent and auto-replies to close the deal.</p>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="cfgAutoPilotReply" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-card">
+                  <div>
+                    <strong>Require Manual Review Before Sending</strong>
+                    <p class="small text-muted">If enabled, AI will draft the reply and notify you for a 1-click approval instead of sending immediately.</p>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="cfgRequireApproval">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Inbox Check & Follow-Up Polling Interval</label>
+                <select class="form-control" id="cfgPollInterval">
+                  <option value="2">Every 2 Minutes (High Velocity)</option>
+                  <option value="5" selected>Every 5 Minutes (Recommended)</option>
+                  <option value="15">Every 15 Minutes</option>
+                  <option value="30">Every 30 Minutes</option>
+                </select>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Default Email Signature</label>
+                <textarea class="form-control font-mono" id="cfgSignature" rows="4"></textarea>
+              </div>
+
+              <div class="mt-4 text-right">
+                <button class="btn btn-primary btn-lg" id="btnSaveAllSettings">
+                  💾 Save All Settings & Start Engine
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Manual Add Lead Modal -->
+  <div class="modal-overlay" id="modalAddLead">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Prospective Client</h3>
+        <button class="btn-close" id="btnCloseAddLeadModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-3">
+          <label class="form-label">Company / Brand Name *</label>
+          <input type="text" class="form-control" id="manualCompanyName" placeholder="Acme Technologies" required>
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label">Website URL</label>
+          <input type="url" class="form-control" id="manualWebsite" placeholder="https://example.com">
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label">Contact Email Address *</label>
+          <input type="email" class="form-control" id="manualEmail" placeholder="founder@example.com" required>
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label">Contact Person Name</label>
+          <input type="text" class="form-control" id="manualContactName" placeholder="John Doe (Founder / CTO)">
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label">Identified Gaps / Needs</label>
+          <input type="text" class="form-control" id="manualGaps" placeholder="Needs responsive web redesign or cloud migration">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelAddLead">Cancel</button>
+        <button class="btn btn-primary" id="btnSaveManualLead">Save Lead</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
